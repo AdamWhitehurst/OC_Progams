@@ -1,3 +1,1 @@
-local component = require('component')
-local geo = require('component.geolyzer')
-print(geo)
+print('I was downloaded from the internet thru Git!')
