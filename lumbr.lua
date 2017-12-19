@@ -1,6 +1,5 @@
-
--- Define the width of the tree's trunk
 local TREE_WIDTH = 1
+local robot = require('robot')
 local component = require('component')
 local sides = require('sides')
 local geo = component.geolyzer
@@ -46,7 +45,9 @@ end
 
 -- Once we've detected a log in front of us, harvest it
 function harvestLog()
-	robot.swing()
+	if robot.swing() then
+    robot.suck()
+  end
 end
 
 
