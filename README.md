@@ -1,2 +1,2 @@
-# OC_Progams
+# OC_Programs
 LUA Program Repo for OpenComputers MC Mod
