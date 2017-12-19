@@ -8,7 +8,7 @@ local geo = component.geolyzer
 function init ()
 	-- Equip Axe
 	-- Find Trunk
-	harvestLoop()
+   harvestLoop()
 end
 
 function harvestLoop()
