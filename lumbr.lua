@@ -38,7 +38,9 @@ function harvestWoodLayer()
   local success = false
 
 	for i = 1, 4 do
-		success = harvestWoodLine()
+		if harvestWoodLine() then
+      success = true
+    end
 
     -- TODO: Handle failures
 		robot.forward()
