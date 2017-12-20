@@ -20,8 +20,8 @@ function loop()
   while not shouldEnd do
     -- TODO: checkInventory()
 
-    local blocksHarvested = harvestWoodLayer()
-    if blocksHarvested then
+    local harvestSuccess = harvestWoodLayer()
+    if harvestSuccess then
       if detectBlock(sides.up, 'minecraft:leaves') then
         robot.swingUp()
       end
@@ -36,8 +36,9 @@ end
 
 -- Harvests a whole layer of the tree.
 -- Ends at same pos, orient as start.
--- Returns whether any blocks were 
--- successfully harvested
+-- Returns true if any blocks were 
+-- successfully harvested; false if none
+-- or failed to move forward.
 function harvestWoodLayer()
   local success = false
 
@@ -46,8 +47,11 @@ function harvestWoodLayer()
       success = true
     end
 
-    -- TODO: Handle failures
-		robot.forward()
+    if not tryForward() then
+      success = false
+      return success -- Abort
+    end
+
 		robot.turnLeft()
 	end
 
@@ -55,8 +59,10 @@ function harvestWoodLayer()
 end
 
 -- Harvests a line of logs
--- Returns whether any blocks were
--- successfully harvested
+-- Returns true if any blocks were
+-- harvested; false if none or failed to harvest
+-- full line
+-- TODO: return failure string?
 function harvestWoodLine()
   local success = false
   -- Why the hell are LUA for-loops inclusive?
@@ -67,11 +73,33 @@ function harvestWoodLine()
       end
 		end
 
-    -- TODO: Handle failures
+    -- try to move over
 		robot.turnRight()
-		robot.forward()
+    if not tryForward() then
+      success = false
+      return success -- Abort
+    end
 		robot.turnLeft()
 	end
+
+  return success
+end
+
+-- Tries to move robot forward, if can't, it will try
+-- to break whatever is in front of it
+function tryForward()
+  local success = robot.forward()
+  -- if we can't move forward, try to break
+  -- the block and try again. Can't break:
+  -- WTH are you trying to move thru??
+  if not success then
+    -- save power, don't detect
+    robot.swing()
+
+    if robot.forward() then
+      success = true
+    end
+  end
 
   return success
 end
