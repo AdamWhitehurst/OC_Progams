@@ -16,17 +16,21 @@ function init ()
 end
 
 function loop()
-  -- TODO: checkInventory()
+  local shouldEnd = false
+  while not shouldEnd do
+    -- TODO: checkInventory()
 
-  local blocksHarvested = harvestWoodLayer()
-  if blocksHarvested then
-    if detectBlock(sides.up, 'minecraft:leaves') then
-      robot.swingUp()
+    local blocksHarvested = harvestWoodLayer()
+    if blocksHarvested then
+      if detectBlock(sides.up, 'minecraft:leaves') then
+        robot.swingUp()
+      end
+
+      moveToNextLayer()
+    else
+      shouldEnd = true
+      returnToBase()
     end
-
-    moveToNextLayer()
-  else
-    returnToBase()
   end
 end
 
@@ -122,7 +126,10 @@ end
 -- TODO: Waypoint-based movement
 function returnToBase()
   local x, y, z = nav.getPosition()
-  while y != 
+  while y != startY do
+    robot.down()
+    y = y - 1
+  end
 end
 
 init()
