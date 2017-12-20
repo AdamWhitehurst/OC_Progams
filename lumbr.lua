@@ -49,7 +49,7 @@ function harvestWoodLayer()
 
     if not tryForward() then
       success = false
-      return success -- Abort
+      break success -- Abort
     end
 
 		robot.turnLeft()
@@ -77,7 +77,7 @@ function harvestWoodLine()
 		robot.turnRight()
     if not tryForward() then
       success = false
-      return success -- Abort
+      break -- Abort
     end
 		robot.turnLeft()
 	end
