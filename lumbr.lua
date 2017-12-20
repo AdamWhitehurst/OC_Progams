@@ -1,4 +1,4 @@
-local TREE_WIDTH = 1
+local TREE_WIDTH = 2
 local robot = require('robot')
 local component = require('component')
 local sides = require('sides')
@@ -18,7 +18,7 @@ end
 function loop()
   -- TODO: checkInventory()
 
-  local blocksHarvested = harvestLayer()
+  local blocksHarvested = harvestWoodLayer()
   -- if blocksHarvested then
   --   if detectBlock(sides.up, 'minecraft:leaves') then
   --     robot.swingUp()
@@ -30,14 +30,15 @@ function loop()
   -- end
 end
 
--- Harvests a whole layer of the tree
+-- Harvests a whole layer of the tree.
+-- Ends at same pos, orient as start.
 -- Returns whether any blocks were 
 -- successfully harvested
-function harvestLayer()
+function harvestWoodLayer()
   local success = false
 
 	for i = 1, 4 do
-		success = harvestWidth()
+		success = harvestWoodLine()
 		robot.forward()
 		robot.turnLeft()
 	end
@@ -48,10 +49,10 @@ end
 -- Harvests a line of logs
 -- Returns whether any blocks were
 -- successfully harvested
-function harvestWidth()
+function harvestWoodLine()
   local success = false
-
-	for x = 0, TREE_WIDTH do
+  -- Why the hell are LUA for-loops inclusive?
+	for x = 1, TREE_WIDTH do 
 		if logFound() then
 			if harvestLog() then
         success = true
