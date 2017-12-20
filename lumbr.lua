@@ -104,7 +104,7 @@ end
 -- Returns whether the given block id is detected
 -- on the given side.
 function detectBlock(side, blockID)
-  local detectSuccessful = false
+  local detectSuccessful = false -- only for detect(), not analyze()
 
   if side == sides.up then
     detectSuccessful = robot.detectUp()
@@ -113,6 +113,7 @@ function detectBlock(side, blockID)
   end
 
   if detectSuccessful then
+    local analysis = geo.analyze(side)
     if analysis.name == blockID then
       return true
     end
@@ -126,7 +127,7 @@ end
 -- TODO: Waypoint-based movement
 function returnToBase()
   local x, y, z = nav.getPosition()
-  while y != startY do
+  while y ~= startY do
     robot.down()
     y = y - 1
   end
